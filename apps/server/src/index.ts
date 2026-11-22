@@ -12,6 +12,9 @@ import { RoomState } from '@p2gather/shared';
 dotenv.config();
 
 const app = express();
+// Render (and most hosts) sit behind a proxy; this makes rate-limit and
+// secure-cookie handling read the real client IP from X-Forwarded-For.
+app.set('trust proxy', 1);
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {

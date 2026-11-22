@@ -36,6 +36,3 @@ coverage/
 
 # Vercel
 .vercel
-
-# Render
-render.yaml

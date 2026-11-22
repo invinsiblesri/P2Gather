@@ -1,131 +1,189 @@
 # P2Gather — Build & Deploy Guide
 
-This guide walks you through building the P2Gather application locally, running the dev servers, and deploying to **Vercel** (frontend) and **Render** (backend) on their free tiers.
+P2Gather is a synchronized listening room: create a room, share a 6-character code, and everyone hears the same track at the same moment. No accounts, no installs. The server relays room state only — it never proxies, downloads, or stores audio.
+
+This guide covers local development, the architecture, and deployment to **Vercel** (frontend) and **Render** (backend) on their free tiers.
 
 ---
 
-## 1️⃣ Local Development
+## 1. Project structure
 
-### 1.1 Prerequisites
-- **Node.js** ≥ 18.x (LTS)
-- **npm** (v10) or **pnpm** (if you prefer; a `pnpm` binary may not be available on Windows, so `npm` is used here)
-- **Git**
-- **GitHub CLI** (`gh`) – optional, only needed for repo creation/pushing
+```
+p2gather/
+├── apps/
+│   ├── web/                 # React 18 + Vite + TypeScript + Tailwind + Zustand
+│   │   └── src/
+│   │       ├── pages/       # LandingPage, RoomPage, JoinPage, PrivacyPage
+│   │       ├── components/  # Hero, NavBar, SpecGrid, LiveRoomPreview, FAQ, Footer...
+│   │       ├── features/    # search, queue, player, room, chat
+│   │       ├── data/providers/  # YouTubeProvider, AudiusProvider
+│   │       ├── ui/          # Button, Logo
+│   │       └── styles/      # tokens.css, fonts.css
+│   └── server/              # Node + Express + Socket.io + zod + helmet + rate-limit
+│       └── src/
+│           ├── rooms/       # RoomManager (codes, TTL sweeper, host transfer)
+│           ├── index.ts     # HTTP + Socket.io handlers
+│           └── rooms/roomCode.test.ts
+├── packages/shared/         # Track, RoomState, Listener, MusicProvider, Events, zod schemas
+├── vercel.json              # Vercel build + SPA rewrites
+├── render.yaml              # Render web service definition
+├── GUIDE.md                 # this file
+└── package.json             # npm workspaces + scripts
+```
 
-### 1.2 Install dependencies
+---
+
+## 2. Local development
+
+### Prerequisites
+- Node.js ≥ 18 (LTS)
+- npm (v10) — this repo uses npm workspaces (pnpm works too if you have it)
+
+### Install
 ```bash
-# From the project root (p2gather/)
 npm install
 ```
-> The first run will install all workspace packages (`@p2gather/web`, `@p2gather/server`, `@p2gather/shared`). Expect a few seconds; you'll see some deprecation warnings that are safe to ignore.
 
-### 1.3 Start dev servers
+### Environment variables
+Copy the examples and fill them in:
+
+```bash
+# apps/server/.env
+PORT=3001
+YOUTUBE_API_KEY=your_youtube_data_api_v3_key
+FRONTEND_URL=http://localhost:5173
+
+# apps/web/.env
+VITE_API_URL=http://localhost:3001
+```
+
+> `YOUTUBE_API_KEY` stays on the server only. It is never shipped to the browser bundle, and `.env` is gitignored.
+
+### Run both apps
 ```bash
 npm run dev
 ```
-- **What happens**: `concurrently` launches **Vite** (frontend on `http://localhost:5173`) and **nodemon** + Express + Socket.io (backend on `http://localhost:3001`) simultaneously.
-- **Verify**: Open `http://localhost:5173` in a browser. You should see the P2Gather landing page.
-- **Health check**: The page automatically calls `/api/health`. Open the browser console → you should see JSON `{status:"ok",timestamp:"2026-…"}`. Or manually:
-  ```bash
-  curl http://localhost:3001/health
-  ```
+- Frontend: http://localhost:5173
+- Backend:  http://localhost:3001
+- Health:   http://localhost:3001/health
 
-### 1.4 Environment variables
-Create `.env` files (they’re already present as examples):
-
-- **`apps/server/.env.example`** – `PORT`, `YOUTUBE_API_KEY`, `FRONTEND_URL`
-- **`apps/web/.env.example`** – `VITE_API_URL`
-
-Copy each to the real `.env` file and fill in the values (especially `YOUTUBE_API_KEY` – **never commit this to the repo**; it’s listed in `.gitignore`).
-
----
-
-## 2️⃣ Phase Overview (from the Prompt Pack)
-
-| Phase | Goal | Rough Scope |
-|------|------|-------------|
-| **Phase 0** | Scaffold monorepo, TypeScript, pnpm workspaces, Tailwind, fonts, `.env.example`, health route, shared schemas | ✅ Done |
-| **Phase 1** | Static UI shell (landing page, room UI, fake data) | Next |
-| **Phase 2** | YouTube + Audio adapters, search, queue, autoplay overlay |
-| **Phase 3** | Real‑time rooms (code generator, socket handlers, drift correction) |
-| **Phase 4** | Chat, avatars, invite links, wake lock |
-| **Phase 5** | Production deploy, hardening, load testing |
-
-You can continue by **pasting the next Phase prompt** after the current one, and I’ll generate the code chunk, explain it, and give you a “try on your own” task.
-
----
-
-## 3️⃣ Deploying to Vercel (frontend)
-
-1. **Push code to GitHub** (see Section 4).
-2. In the Vercel dashboard:
-   - **New Project** → *Import Repository* → select the GitHub repo you just created.
-   - **Framework Preset**: *Vite* (auto‑detected).
-   - **Root Directory**: leave **empty** (Vercel will automatically find the `apps/web` Vite config inside the monorepo).
-   - **Build Command**: `npm run build` (taken from the root `package.json`).
-   - **Output Directory**: leave blank (Vercel infers it from the Vite build).
-3. **Add Environment Variables** (Project → Settings → Environment Variables):
-   - `VITE_API_URL=https://<your‑render‑app>.onrender.com/api`
-4. Click **Deploy**. Vercel will run the build script, output the static assets, and give you a URL like `https://p2gather.vercel.app`.
-
-### 3.1 Vercel “Cold‑start” note
-Render’s free tier puts the backend to sleep after 15 min of inactivity. The `/health` endpoint will quickly “wake” it; the pack mentions a screen that can show “Waking the server… this can take up to 30 seconds on free hosting”. The landing page already displays a health‑status indicator that reflects this.
-
----
-
-## 4️⃣ Deploying to Render (backend)
-
-1. **Create a new Web Service** on Render:
-   - **GitHub** → select the same repo.
-   - **Environment**: *Node*.
-   - **Build Command**: `npm ci` (installs exactly what’s in `package-lock.json`/`npm shrinkwrap`).
-   - **Start Command**: `npm run dev` **or** `node dist/index.js` (if you prefer a plain start script).
-2. **Add Environment Variables** under “Environment” → “Add Variable”:
-   - `PORT=10000` (Render assigns this port automatically; the Express server reads `process.env.PORT || 3001` so it will work either way).
-   - `YOUTUBE_API_KEY=your_youtube_api_key_here` (keep secret – never commit).
-   - `FRONTEND_URL=https://<your‑vercel‑app>.vercel.app` (used to lock CORS).
-3. **CORS hardening** – In `apps/server/src/index.ts` (or edit at runtime) set the origin to the exact Vercel URL:
-
-   ```ts
-   import cors from 'cors';
-   app.use(
-     cors({
-       origin: process.env.FRONTEND_URL, // e.g. "https://p2gather.vercel.app"
-     })
-   );
-   ```
-4. **Deploy**. Render will give you a URL like `https://p2gather-abc123.onrender.com`.
-
-### 4.1 Render “Cold‑start” note
-The free tier sleeps after 15 min. The `/health` endpoint will auto‑wake the service. The landing page’s health indicator will show the delayed response on first access after a sleep period.
-
----
-
-## 5️⃣ Verifying the Deploy
-
-Once both services are live, run these quick checks:
-
+### Build & test
 ```bash
-# Health check (from anywhere)
-curl https://your-vercel-app.vercel.app/api/health
-# → {"status":"ok","timestamp":"2026-…"}
-
-# Landing page
-open https://your-vercel-app.vercel.app
-# → you should see the P2Gather UI, no horizontal scroll at 360 px,
-#   and a Lighthouse accessibility score ≥ 95.
+npm run build   # builds shared -> web -> server
+npm test        # runs the vitest suite (room code generator)
 ```
 
-If the JSON payload appears and the page loads without horizontal scroll, you’re ready to move on to the next phase.
+---
+
+## 3. What is implemented
+
+| Area | Status |
+|------|--------|
+| Landing page (nav, hero, spec grid, live preview, how-it-works, closer look, join code, FAQ, footer) | ✅ |
+| Design tokens, 3 fonts, dark theme, responsive down to 360px | ✅ |
+| Custom SVG logo + favicon + Open Graph meta | ✅ |
+| Create/join flow, `/join`, `/r/:code`, `/privacy` routes | ✅ |
+| YouTube search via Data API v3 (server-side, 5-min cache, rate-limited) | ✅ |
+| Audius provider adapter | ✅ |
+| Debounced (300ms) search + local queue (dedupe) | ✅ |
+| Room manager: 6-char code (no 0/O/1/I/L), 25 listeners, 100 queue, host transfer, idle sweeper | ✅ |
+| Socket.io events: create, join, play, pause, seek, next, queue add/remove, chat, heartbeat, presence | ✅ |
+| Chat: 280 chars, HTML-stripped, never logged | ✅ |
+| Security: helmet, CORS allow-list, rate limits, 10kb JSON cap | ✅ |
+| Privacy & attributions page | ✅ |
+| Vitest suite for the room code generator | ✅ |
+
+### Known free-tier limitations (by design)
+- YouTube can show ads to some listeners; the heartbeat drift-correction window is 1.5s.
+- Some videos block embedding (errors 101/150) — the UI should toast and skip.
+- Phone browsers may pause playback on screen lock; a wake lock is requested where supported.
+- Render free tier sleeps after 15 min idle; `/health` wakes it (cold start up to ~30s).
+- Active rooms live in memory and are lost on server restart.
 
 ---
 
-## 6️⃣ Next Steps
+## 4. Deploy the frontend to Vercel
 
-- Continue with **Phase 1** (static UI shell) by pasting the next prompt from the pack.
-- When you’re ready to **deploy**, follow Sections 3 & 4 above.
-- If you hit any roadblocks (CORS errors, missing env vars, build failures), just let me know the exact error message and I’ll help troubleshoot.
+1. Push the repo to GitHub (already at `https://github.com/invinsiblesri/P2Gather`).
+2. In Vercel: **New Project → Import** the repo.
+3. **Root Directory**: leave empty (repo root). `vercel.json` handles everything:
+   - Install: `npm install`
+   - Build: `npm run build -w @p2gather/shared && npm run build -w @p2gather/web`
+   - Output: `apps/web/dist`
+   - SPA rewrites to `index.html`
+4. **Environment variable** (Project → Settings → Environment Variables):
+   - `VITE_API_URL = https://<your-render-service>.onrender.com`
+5. Deploy. Vercel gives you `https://<project>.vercel.app`.
+
+> Note: the frontend calls `/api/*` relative to its own origin in local dev (Vite proxy). In production it calls the Render URL via `VITE_API_URL`. If you prefer to keep calls relative, add a Vercel rewrite to the Render URL instead.
 
 ---
 
-*Happy building! 🎧🚀*
+## 5. Deploy the backend to Render
+
+1. Render dashboard: **New → Web Service**.
+2. Connect the same GitHub repo.
+3. **Root Directory**: repo root.
+4. **Build Command**:
+   ```bash
+   npm install && npm run build -w @p2gather/shared && npm run build -w @p2gather/server
+   ```
+5. **Start Command**:
+   ```bash
+   node apps/server/dist/index.js
+   ```
+6. **Health Check Path**: `/health`
+7. **Environment variables**:
+   - `YOUTUBE_API_KEY` = your key (secret)
+   - `FRONTEND_URL` = `https://<your-vercel-app>.vercel.app`
+   - `NODE_VERSION` = `20.11.0`
+8. Deploy. Render gives you `https://<service>.onrender.com`.
+
+> `render.yaml` in the repo can also be used via Render Blueprints; it defines the same build/start commands and marks the secrets as `sync: false` so you enter them in the dashboard.
+
+### CORS
+The server locks CORS to `FRONTEND_URL`. Set it to your exact Vercel origin (no trailing slash). During local dev it falls back to `*` only if `FRONTEND_URL` is unset.
+
+---
+
+## 6. Verify the deployment
+
+```bash
+# Health (wakes a sleeping free instance)
+curl https://<your-render>.onrender.com/health
+# → {"status":"ok","timestamp":"..."}
+
+# YouTube search through the server
+curl "https://<your-render>.onrender.com/api/search?q=daft%20punk"
+# → JSON array of YouTube search results
+```
+
+Open the Vercel URL and check:
+- Landing page loads with no horizontal scroll at 360px.
+- "Join with a code" navigates to `/join` and formats as `ABC-123`.
+- `/privacy` renders.
+- Creating a room and joining from a second browser keeps play/pause/seek in sync.
+
+---
+
+## 7. Security notes
+
+- Provider keys live only in backend environment variables.
+- Chat is sanitized (HTML stripped) and never logged.
+- Limits: 25 listeners/room, 100 queue items, 280-char messages.
+- Rate limits: 30 searches/min, 100 API requests/min.
+- `.env` files are gitignored; `.env.example` files are committed.
+
+---
+
+## 8. Roadmap / next improvements
+
+- Replace the mock track in the room UI with the real YouTube IFrame Player and Audius `<audio>` engine.
+- Add clock-offset ping/pong rounds and client-side drift correction (server timestamps are already emitted).
+- Add the autoplay-unlock "Tap to Join & Sync Audio" overlay.
+- Add presence avatars from initials on deterministic gradients.
+- Add the idle-room cold-start screen and reconnection backoff UI.
+
+---
+
+*Built as a learning project. P2Gather is independent and not affiliated with YouTube, Google, or Audius. YouTube is a trademark of Google LLC.*

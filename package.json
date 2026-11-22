@@ -8,8 +8,11 @@
   ],
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace=@p2gather/web\" \"npm run dev --workspace=@p2gather/server\" --kill-others-on-fail",
-    "build": "npm run build --workspaces --if-present",
-    "lint": "npm run lint --workspaces --if-present"
+    "build": "npm run build -w @p2gather/shared && npm run build -w @p2gather/web && npm run build -w @p2gather/server",
+    "build:web": "npm run build -w @p2gather/shared && npm run build -w @p2gather/web",
+    "build:server": "npm run build -w @p2gather/shared && npm run build -w @p2gather/server",
+    "test": "npm run test -w @p2gather/server --if-present",
+    "start": "node apps/server/dist/index.js"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",

@@ -7,6 +7,7 @@ export const TrackSchema = z.object({
   artist: z.string(),
   artworkUrl: z.string().optional(),
   durationSeconds: z.number().optional(),
+  positionSec: z.number().optional(),
   attributionUrl: z.string().optional(),
 });
 
@@ -34,6 +35,12 @@ export const RoomStateSchema = z.object({
 });
 
 export type RoomState = z.infer<typeof RoomStateSchema>;
+
+export interface MusicProvider {
+  search(q: string): Promise<Track[]>;
+  getTrack(id: string): Promise<Track | null>;
+  canPlay(t: Track): boolean;
+}
 
 export const Events = {
   ROOM_CREATE: 'room:create',

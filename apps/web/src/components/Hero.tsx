@@ -1,4 +1,4 @@
-import { Logo } from '../ui/Logo';
+import { Link } from 'react-router-dom';
 import { Button } from '../ui/Button';
 
 export function Hero() {
@@ -11,7 +11,7 @@ export function Hero() {
         Create a room, share the code, and everyone hears the same song at the same moment. No account. No install.
       </p>
       <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8">
-        <Button onClick={() => {}}>Create a room</Button>
+        <Button onClick={() => { window.location.href = '/join'; }}>Create a room</Button>
         <Link to="/join" className="text-text-secondary hover:text-text-primary">
           Join with a code ↓
         </Link>

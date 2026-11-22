@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: p2gather-server
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build -w @p2gather/shared && npm run build -w @p2gather/server
+    startCommand: node apps/server/dist/index.js
+    healthCheckPath: /health
+    envVars:
+      - key: YOUTUBE_API_KEY
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: NODE_VERSION
+        value: 20.11.0

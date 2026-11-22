@@ -9,15 +9,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@p2gather/shared": "*",
+    "@types/lodash": "^4.17.27",
+    "clsx": "^2.0.0",
+    "lodash": "^4.18.1",
+    "lucide-react": "^0.294.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "zustand": "^4.4.7",
+    "react-router-dom": "^7.18.6",
     "socket.io-client": "^4.7.2",
-    "lucide-react": "^0.294.0",
-    "zod": "^3.22.4",
-    "clsx": "^2.0.0",
     "tailwind-merge": "^2.0.0",
-    "@p2gather/shared": "*"
+    "zod": "^3.22.4",
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@types/react": "^18.2.39",

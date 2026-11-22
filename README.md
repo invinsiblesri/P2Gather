@@ -4,6 +4,14 @@ Synchronized listening rooms. **Create a room. Share the code. Press play togeth
 
 One person creates a private room and shares a 6-character code (like `84K-2QP`) or an invite link. Everyone who joins hears the same track at the same moment on their own device. No accounts. Rooms are temporary. The server relays room state only — it never proxies, downloads, or stores audio.
 
+## Live
+
+- **Frontend (Vercel):** https://p2gather.vercel.app
+- **Backend (Render):** https://p2gather-server.onrender.com
+- **Health check:** https://p2gather-server.onrender.com/health
+
+Both services auto-deploy on every push to `main`.
+
 ## Stack
 
 - **Frontend:** React 18, Vite, TypeScript (strict), Tailwind, Zustand — `apps/web`

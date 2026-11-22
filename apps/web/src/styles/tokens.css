@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-canvas: #0F1115;
+    --bg-surface: #181B22;
+    --bg-elevated: #20242D;
+    --text-primary: #F3F4F6;
+    --text-secondary: #9CA3AF;
+    --text-muted: #667085;
+    --brand-indigo: #6366F1;
+    --brand-mint: #10B981;
+    --status-warning: #F59E0B;
+    --status-error: #EF4444;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+  }
+
+  body {
+    @apply bg-bg-canvas text-text-primary font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  input, button, textarea, select {
+    font: inherit;
+  }
+}

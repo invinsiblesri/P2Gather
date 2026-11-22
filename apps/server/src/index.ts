@@ -77,8 +77,10 @@ app.get('/api/search', async (req, res) => {
 
     res.json(response.data.items);
   } catch (error: any) {
-    console.error('YouTube API Error:', error?.message);
-    res.status(500).json({ error: 'Failed to search YouTube' });
+    const reason = error?.response?.data?.error?.errors?.[0]?.reason;
+    const detail = error?.response?.data?.error?.message;
+    console.error('YouTube API Error:', error?.message, '| reason:', reason, '| detail:', detail);
+    res.status(500).json({ error: 'Failed to search YouTube', reason, detail });
   }
 });
 

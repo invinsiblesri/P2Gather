@@ -27,3 +27,32 @@
     font: inherit;
   }
 }
+
+/* Animated background */
+@keyframes anim-bg-aurora {
+  0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.35; }
+  50% { transform: translate3d(70px, -50px, 0) scale(1.25); opacity: 0.6; }
+  100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.35; }
+}
+
+@keyframes anim-bg-aurora-alt {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.25; }
+  50% { transform: translate3d(-60px, 40px, 0) scale(1.2); opacity: 0.45; }
+}
+
+@keyframes anim-bg-float {
+  0%, 100% { transform: translateY(0) rotate(-10deg); }
+  50% { transform: translateY(-28px) rotate(12deg); }
+}
+
+.anim-bg-aurora { animation: anim-bg-aurora 18s ease-in-out infinite; }
+.anim-bg-aurora-alt { animation: anim-bg-aurora_alt 22s ease-in-out infinite; }
+.anim-bg-float { animation: anim-bg-float 12s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-bg-aurora,
+  .anim-bg-aurora_alt,
+  .anim-bg-float {
+    animation: none;
+  }
+}

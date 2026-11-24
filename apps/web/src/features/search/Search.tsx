@@ -20,19 +20,19 @@ export function Search() {
   const noResults = !loading && !error && query.trim().length > 0 && results.length === 0;
 
   return (
-    <div className="p-5">
+    <div className="p-5 sm:p-6">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-base font-display font-bold text-text-primary">Search</h2>
-        <div className="flex gap-1 p-0.5 glass rounded-pill">
+        <h2 className="font-display text-base font-semibold text-bone-50">Search</h2>
+        <div className="flex gap-0 border border-edge font-mono text-[10px]">
           {(['youtube', 'audius'] as const).map(p => (
             <button
               key={p}
               onClick={() => setProvider(p)}
-              className={`px-3 py-1 rounded-pill text-xs font-medium transition-all duration-200 ${
-                provider === p ? 'bg-brand-lime text-bg-canvas' : 'text-text-muted hover:text-text-secondary'
+              className={`px-3 py-1.5 uppercase tracking-wider transition-colors ${
+                provider === p ? 'bg-electric text-white' : 'text-bone-400 hover:text-bone-50'
               }`}
             >
-              {p === 'youtube' ? 'YouTube' : 'Audius'}
+              {p === 'youtube' ? 'YT' : 'AU'}
             </button>
           ))}
         </div>
@@ -40,11 +40,11 @@ export function Search() {
 
       <div className="flex items-center gap-2 mb-4">
         <div className="relative flex-1">
-          <SearchIcon size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
+          <SearchIcon size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-bone-500" />
           <input
             type="text"
             placeholder="Search tracks, artists..."
-            className="w-full pl-9 pr-4 py-2.5 bg-white/[0.03] border border-white/[0.06] rounded-button text-sm text-text-primary placeholder:text-text-muted/50 focus:outline-none focus:border-brand-lime/30 focus:ring-2 focus:ring-brand-lime/10 transition-all"
+            className="w-full pl-9 pr-4 py-2.5 bg-ink-900/60 border border-edge text-sm text-bone-50 placeholder:text-bone-500/50 focus:outline-none focus:border-electric/40 focus:ring-1 focus:ring-electric/20 transition-all"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -52,7 +52,7 @@ export function Search() {
         </div>
         <button
           onClick={() => runSearch()}
-          className="px-4 py-2.5 bg-brand-lime text-bg-canvas rounded-button text-sm font-semibold hover:brightness-110 disabled:opacity-40 transition-all flex items-center gap-1.5"
+          className="btn-solid text-xs px-4 py-2.5 disabled:opacity-30"
           disabled={loading || !query.trim()}
         >
           {loading ? <Loader2 size={14} className="animate-spin" /> : <SearchIcon size={14} />}
@@ -61,20 +61,20 @@ export function Search() {
       </div>
 
       {error && (
-        <div className="bg-status-error/10 border border-status-error/20 rounded-card p-3 mb-4">
-          <p className="text-status-error text-sm">{error}</p>
+        <div className="border border-red-500/30 bg-red-500/10 p-3 mb-4">
+          <p className="text-red-400 text-sm">{error}</p>
         </div>
       )}
 
       {loading && (
-        <div className="flex items-center justify-center py-10 gap-2 text-text-muted text-sm">
-          <Loader2 size={16} className="animate-spin text-brand-lime" />
+        <div className="flex items-center justify-center py-10 gap-2 text-bone-500 text-sm">
+          <Loader2 size={16} className="animate-spin text-electric" />
           Searching...
         </div>
       )}
 
       {noResults && (
-        <p className="text-text-muted text-sm text-center py-8">No results found</p>
+        <p className="text-bone-500 text-sm text-center py-8">No results found</p>
       )}
 
       {hasResults && (
@@ -82,22 +82,22 @@ export function Search() {
           {results.map((track, index) => (
             <div
               key={index}
-              className="flex items-center gap-3 p-2 rounded-card glass-hover group cursor-default"
+              className="flex items-center gap-3 p-2 hover:bg-ink-800/50 transition-colors group"
             >
-              <div className="w-11 h-11 rounded-lg bg-white/[0.04] border border-white/[0.04] flex-shrink-0 overflow-hidden">
+              <div className="w-10 h-10 bg-ink-800 border border-edge flex-shrink-0 overflow-hidden">
                 {track.artworkUrl ? (
                   <img src={track.artworkUrl} alt={track.title} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-brand-lime/20 to-brand-indigo/20" />
+                  <div className="w-full h-full bg-gradient-to-br from-electric/20 to-hot/10 flex items-center justify-center text-bone-500 text-xs">&#9835;</div>
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="text-sm font-medium text-text-primary truncate">{track.title}</h3>
-                <p className="text-text-muted text-xs truncate">{track.artist}</p>
+                <h3 className="text-sm font-medium text-bone-50 truncate">{track.title}</h3>
+                <p className="text-bone-500 text-xs truncate">{track.artist}</p>
               </div>
               <button
                 onClick={() => addToQueue(track)}
-                className="flex-shrink-0 w-8 h-8 rounded-lg glass flex items-center justify-center text-text-muted hover:text-brand-lime hover:border-brand-lime/20 transition-all opacity-0 group-hover:opacity-100"
+                className="flex-shrink-0 h-7 w-7 grid place-items-center border border-edge text-bone-500 hover:text-electric hover:border-electric/40 transition-colors opacity-0 group-hover:opacity-100"
                 title="Add to queue"
               >
                 <Plus size={14} />

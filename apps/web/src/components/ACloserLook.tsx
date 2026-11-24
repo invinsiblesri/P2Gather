@@ -1,99 +1,143 @@
-import { ChevronLeft, ChevronRight, Music, Search, ListMusic, MessageCircle } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { useReveal } from '../hooks/useReveal';
+import { ArrowLeft, ArrowRight, Music, Search, ListMusic, MessageCircle } from 'lucide-react';
 
-const screens = [
+const SCREENS = [
   {
-    title: 'ROOM',
-    id: '01',
+    id: 0,
+    label: 'Room View',
     icon: Music,
-    description: 'Real-time synced playback with everyone in the room. See listeners, controls, and track info.',
-    gradient: 'from-brand-lime/30 via-brand-lime/5 to-transparent',
-    iconColor: 'text-brand-lime',
+    color: 'from-electric/30 via-electric/5 to-transparent',
+    caption: 'The main room: synced playback, listeners, and controls all in one place.',
   },
   {
-    title: 'SEARCH',
-    id: '02',
+    id: 1,
+    label: 'Search & Queue',
     icon: Search,
-    description: 'Search YouTube or Audius instantly. Thumbnails, artists, and one-tap add to queue.',
-    gradient: 'from-brand-indigo/30 via-brand-indigo/5 to-transparent',
-    iconColor: 'text-brand-indigo',
+    color: 'from-hot/30 via-hot/5 to-transparent',
+    caption: 'Search YouTube or Audius. One tap to add any track to the shared queue.',
   },
   {
-    title: 'QUEUE',
-    id: '03',
+    id: 2,
+    label: 'Queue Manager',
     icon: ListMusic,
-    description: 'Collaborative queue. Anyone in the room can add tracks. Up to 50 items.',
-    gradient: 'from-brand-violet/30 via-brand-violet/5 to-transparent',
-    iconColor: 'text-brand-violet',
+    color: 'from-electric/20 via-ink-900/80 to-transparent',
+    caption: 'Collaborative queue. Anyone in the room can add tracks. Up to 50 items.',
   },
   {
-    title: 'CHAT',
-    id: '04',
+    id: 3,
+    label: 'Live Chat',
     icon: MessageCircle,
-    description: 'Real-time lightweight chat. Coordinate with friends and react to tracks.',
-    gradient: 'from-brand-coral/30 via-brand-coral/5 to-transparent',
-    iconColor: 'text-brand-coral',
+    color: 'from-hot/20 via-ink-900/80 to-transparent',
+    caption: 'Real-time chat with everyone in the room. React to songs, coordinate picks.',
   },
 ];
 
 export function ACloserLook() {
+  const heading = useReveal();
   const [active, setActive] = useState(0);
-  const screen = screens[active];
-  const Icon = screen.icon;
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const scrollTo = useCallback((index: number) => {
+    setActive(index);
+    const track = trackRef.current;
+    if (!track) return;
+    const slideWidth = 200 + 24;
+    const center = track.clientWidth / 2 - 100;
+    track.scrollTo({ left: index * slideWidth - center + 100, behavior: 'smooth' });
+  }, []);
+
+  const prev = () => scrollTo((active - 1 + SCREENS.length) % SCREENS.length);
+  const next = () => scrollTo((active + 1) % SCREENS.length);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActive(a => {
+        const next = (a + 1) % SCREENS.length;
+        scrollTo(next);
+        return next;
+      });
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [scrollTo]);
+
+  const screen = SCREENS[active];
 
   return (
-    <div className="py-16 px-6 w-full max-w-4xl mx-auto">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-display font-bold text-text-primary">Inside The Room</h2>
-        <p className="text-text-muted text-sm mt-2">Four screens, one seamless experience</p>
+    <section className="border-t border-edge py-12 overflow-hidden">
+      <div ref={heading} className="rv px-5 sm:px-10 text-center">
+        <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-bone-500">A closer look</p>
+        <h2 className="mt-3 font-display text-4xl font-semibold uppercase tracking-[-0.03em] text-bone-50 sm:text-5xl">
+          Inside the room.
+        </h2>
+        <p className="mt-4 text-sm text-bone-300">Four screens, one seamless experience.</p>
       </div>
 
-      <div className="relative">
-        {/* Phone mockup */}
-        <div className="aspect-[9/16] max-w-[260px] mx-auto glass-strong rounded-[36px] overflow-hidden shadow-glass-lg relative">
-          {/* Notch */}
-          <div className="h-7 flex items-center justify-center">
-            <div className="w-20 h-1.5 rounded-full bg-white/[0.06]" />
-          </div>
-          {/* Screen */}
-          <div className={`flex-1 flex flex-col items-center justify-center p-8 h-[calc(100%-28px)] bg-gradient-to-b ${screen.gradient}`}>
-            <div className={`p-4 rounded-2xl bg-white/[0.04] mb-5 ${screen.iconColor}`}>
-              <Icon size={40} strokeWidth={1.5} />
-            </div>
-            <span className="text-lg font-display font-bold text-text-primary mb-2">{screen.title}</span>
-            <p className="text-text-secondary text-xs text-center leading-relaxed">{screen.description}</p>
-          </div>
-        </div>
-
-        {/* Navigation */}
-        <div className="flex justify-between items-center mt-8 max-w-xs mx-auto">
-          <button
-            onClick={() => setActive(prev => (prev - 1 + screens.length) % screens.length)}
-            className="p-2.5 glass rounded-xl glass-hover"
-          >
-            <ChevronLeft size={18} />
-          </button>
-
-          <div className="flex gap-2 items-center">
-            {screens.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setActive(i)}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
-                  i === active ? 'w-6 bg-brand-lime' : 'w-1.5 bg-white/[0.15] hover:bg-white/[0.3]'
+      {/* Phone carousel */}
+      <div className="relative mt-10" style={{ height: 440 }}>
+        <div
+          ref={trackRef}
+          className="flex items-center gap-6 h-full overflow-x-auto scrollbar-none px-[calc(50%-100px)]"
+          style={{ scrollBehavior: 'smooth', scrollSnapType: 'x mandatory' }}
+        >
+          {SCREENS.map((s, i) => {
+            const Icon = s.icon;
+            const isActive = i === active;
+            return (
+              <div
+                key={s.id}
+                className={`flex-shrink-0 w-[200px] h-[400px] border border-edge rounded-[24px] overflow-hidden transition-all duration-500 cursor-pointer ${
+                  isActive ? 'scale-100 opacity-100 shadow-2xl' : 'scale-90 opacity-40'
                 }`}
-              />
-            ))}
-          </div>
-
-          <button
-            onClick={() => setActive(prev => (prev + 1) % screens.length)}
-            className="p-2.5 glass rounded-xl glass-hover"
-          >
-            <ChevronRight size={18} />
-          </button>
+                style={{ scrollSnapAlign: 'center' }}
+                onClick={() => scrollTo(i)}
+              >
+                <div className="h-7 flex items-center justify-center border-b border-edge/60">
+                  <div className="w-16 h-1 rounded-full bg-bone-500/20" />
+                </div>
+                <div className={`flex-1 flex flex-col items-center justify-center p-6 h-[calc(100%-28px)] bg-gradient-to-b ${s.color} bg-ink-950`}>
+                  <div className="p-3 border border-edge-hi text-bone-100 mb-4">
+                    <Icon size={32} strokeWidth={1.5} />
+                  </div>
+                  <span className="font-display text-sm font-semibold text-bone-50 text-center">{s.label}</span>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
-    </div>
+
+      {/* Caption + nav */}
+      <div className="text-center px-5 mt-6">
+        <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-bone-500">
+          {String(active + 1).padStart(2, '0')} / {String(SCREENS.length).padStart(2, '0')} &middot; {screen.label}
+        </p>
+        <p className="mt-3 font-display text-lg font-medium text-bone-100 max-w-md mx-auto">
+          {screen.caption}
+        </p>
+      </div>
+
+      <div className="flex justify-center items-center gap-5 mt-6">
+        <button onClick={prev} className="h-10 w-10 grid place-items-center border border-edge text-bone-300 hover:bg-ink-800 hover:text-bone-50 transition-colors">
+          <ArrowLeft size={16} />
+        </button>
+        <div className="flex items-center gap-[3px]">
+          {SCREENS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => scrollTo(i)}
+              className={`h-9 grid place-items-center transition-all duration-300 ${i === active ? 'w-[34px]' : 'w-6'}`}
+            >
+              <span className={`block h-[5px] rounded-full transition-all duration-300 ${
+                i === active ? 'w-[25px] bg-hot' : 'w-[5px] bg-bone-500'
+              }`} />
+            </button>
+          ))}
+        </div>
+        <button onClick={next} className="h-10 w-10 grid place-items-center border border-edge text-bone-300 hover:bg-ink-800 hover:text-bone-50 transition-colors">
+          <ArrowRight size={16} />
+        </button>
+      </div>
+    </section>
   );
 }

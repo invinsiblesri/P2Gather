@@ -1,23 +1,21 @@
 import { NavBar } from '../components/NavBar';
 import { Hero } from '../components/Hero';
-import { SpecGrid } from '../components/SpecGrid';
-import { LiveRoomPreview } from '../components/LiveRoomPreview';
-import { HowItWorks } from '../components/HowItWorks';
+import { Features } from '../components/Features';
 import { ACloserLook } from '../components/ACloserLook';
+import { HowItWorks } from '../components/HowItWorks';
 import { JoinWithCode } from '../components/JoinWithCode';
 import { FAQ } from '../components/FAQ';
 import { Footer } from '../components/Footer';
 
 export function LandingPage() {
   return (
-    <div className="relative min-h-screen text-text-primary">
+    <div className="relative min-h-screen text-bone-50">
       <NavBar />
-      <main className="pt-16">
+      <main className="pt-14">
         <Hero />
-        <SpecGrid />
-        <LiveRoomPreview />
-        <HowItWorks />
         <ACloserLook />
+        <Features />
+        <HowItWorks />
         <JoinWithCode />
         <FAQ />
       </main>

@@ -27,41 +27,41 @@ export function Chat({ roomCode }: { roomCode: string }) {
   };
 
   return (
-    <div className="glass-strong rounded-glass flex flex-col h-[480px] shadow-glass">
-      <div className="px-4 py-3 border-b border-white/[0.04] flex items-center justify-between">
-        <h3 className="text-sm font-display font-bold text-text-primary">Chat</h3>
-        <span className="text-[10px] font-mono text-text-muted">{messages.length} msg</span>
+    <div className="spot border border-edge rounded-spot overflow-hidden backdrop-blur-sm bg-ink-950/60 flex flex-col h-[480px]">
+      <div className="relative z-10 px-5 py-3.5 border-b border-edge flex items-center justify-between">
+        <h3 className="font-display text-sm font-semibold text-bone-50">Chat</h3>
+        <span className="font-mono text-[10px] text-bone-500 tabnum">{messages.length} msg</span>
       </div>
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-2.5">
+      <div ref={scrollRef} className="relative z-10 flex-1 overflow-y-auto p-4 space-y-2">
         {messages.map((m, i) => (
-          <div key={i} className="text-sm animate-slide-up" style={{ animationDuration: '0.3s' }}>
-            <span className="text-brand-lime font-medium">{m.user}</span>
-            <span className="text-text-muted mx-1">&middot;</span>
-            <span className="text-text-primary">{m.text}</span>
+          <div key={i} className="text-sm animate-swap-in">
+            <span className="text-electric font-medium font-mono text-[11px]">{m.user}</span>
+            <span className="text-bone-500 mx-1.5">&middot;</span>
+            <span className="text-bone-200">{m.text}</span>
           </div>
         ))}
         {messages.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-full text-text-muted gap-2">
-            <span className="text-2xl">💬</span>
+          <div className="flex flex-col items-center justify-center h-full text-bone-500 gap-2">
+            <span className="text-2xl">&#128172;</span>
             <p className="text-sm">Say hello to the room</p>
           </div>
         )}
       </div>
-      <div className="p-3 border-t border-white/[0.04]">
+      <div className="relative z-10 p-3 border-t border-edge">
         <div className="flex items-center gap-2">
           <input
             type="text"
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && send()}
-            className="flex-1 px-3 py-2.5 bg-white/[0.03] border border-white/[0.06] rounded-button text-sm text-text-primary placeholder:text-text-muted/40 focus:outline-none focus:border-brand-lime/30 focus:ring-2 focus:ring-brand-lime/10 transition-all"
-            placeholder="Message..."
+            className="flex-1 px-3 py-2.5 bg-ink-900/60 border border-edge text-sm text-bone-50 placeholder:text-bone-500/40 focus:outline-none focus:border-electric/40 focus:ring-1 focus:ring-electric/20 transition-all"
+            placeholder="Message (max 280)"
             maxLength={280}
           />
           <button
             onClick={send}
             disabled={!input.trim()}
-            className="p-2.5 rounded-button bg-brand-lime text-bg-canvas hover:brightness-110 disabled:opacity-30 transition-all"
+            className="flex h-10 w-10 items-center justify-center bg-bone-50 text-ink-950 disabled:opacity-30 transition-colors hover:bg-white"
           >
             <Send size={14} />
           </button>

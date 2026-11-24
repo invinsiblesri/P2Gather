@@ -7,92 +7,59 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: {
-          canvas: '#0A0A0F',
-          surface: '#13131A',
-          elevated: '#1C1C26',
-          glass: 'rgba(19, 19, 26, 0.6)',
+        ink: {
+          950: '#02060E',
+          900: '#060D18',
+          850: '#0B1524',
+          800: '#111E30',
         },
-        text: {
-          primary: '#F0F0F5',
-          secondary: '#9898A6',
-          muted: '#5C5C6E',
+        bone: {
+          50: '#F8FAFF',
+          100: '#EFF3FF',
+          200: '#D8E0F0',
+          300: '#B0BAD0',
+          400: '#8892A8',
+          500: '#606A80',
         },
-        brand: {
-          lime: '#C8E64A',
-          indigo: '#6366F1',
-          mint: '#10B981',
-          violet: '#8B5CF6',
-          coral: '#F2674B',
-        },
-        status: {
-          warning: '#F59E0B',
-          error: '#EF4444',
-          success: '#10B981',
-        },
+        hot: '#FF6B35',
+        electric: '#0066FF',
+        edge: 'rgba(248, 250, 255, 0.07)',
+        'edge-hi': 'rgba(248, 250, 255, 0.14)',
       },
       fontFamily: {
-        display: ['"Plus Jakarta Sans"', 'sans-serif'],
+        display: ['"Space Grotesk"', 'sans-serif'],
         sans: ['"Inter"', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
+        mono: ['"IBM Plex Mono"', 'monospace'],
       },
       borderRadius: {
-        'glass': '20px',
-        'card': '16px',
-        'button': '12px',
-        'pill': '100px',
-      },
-      backdropBlur: {
-        'glass': '24px',
-      },
-      boxShadow: {
-        'glow-lime': '0 0 40px rgba(200, 230, 74, 0.15)',
-        'glow-indigo': '0 0 40px rgba(99, 102, 241, 0.15)',
-        'glow-mint': '0 0 40px rgba(16, 185, 129, 0.15)',
-        'glass': '0 8px 32px rgba(0, 0, 0, 0.3)',
-        'glass-lg': '0 16px 64px rgba(0, 0, 0, 0.5)',
+        'spot': '16px',
       },
       animation: {
-        'float': 'float 6s ease-in-out infinite',
-        'float-delayed': 'float 6s ease-in-out 3s infinite',
-        'glow-pulse': 'glow-pulse 4s ease-in-out infinite',
-        'slide-up': 'slide-up 0.6s ease-out',
-        'slide-in-right': 'slide-in-right 0.4s ease-out',
-        'fade-in': 'fade-in 0.5s ease-out',
-        'bounce-in': 'bounce-in 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-        'spin-slow': 'spin 8s linear infinite',
-        'equalizer-1': 'equalizer 0.8s ease-in-out infinite',
-        'equalizer-2': 'equalizer 0.8s ease-in-out 0.2s infinite',
-        'equalizer-3': 'equalizer 0.8s ease-in-out 0.4s infinite',
+        'blink': 'blink 1.15s step-end infinite',
+        'bar-1': 'bar 1s ease-in-out infinite alternate',
+        'bar-2': 'bar 0.8s ease-in-out 0.15s infinite alternate',
+        'bar-3': 'bar 1.2s ease-in-out 0.3s infinite alternate',
+        'bar-4': 'bar 0.9s ease-in-out 0.1s infinite alternate',
+        'bar-5': 'bar 1.1s ease-in-out 0.25s infinite alternate',
+        'sweep': 'sweep-y 3s linear infinite',
+        'swap-in': 'swap-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both',
       },
       keyframes: {
-        'float': {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-20px)' },
+        blink: {
+          '0%, 45%': { opacity: '1' },
+          '55%, 100%': { opacity: '0' },
         },
-        'glow-pulse': {
-          '0%, 100%': { opacity: '0.4' },
-          '50%': { opacity: '0.8' },
+        bar: {
+          '0%': { transform: 'scaleY(0.2)' },
+          '100%': { transform: 'scaleY(1)' },
         },
-        'slide-up': {
-          '0%': { transform: 'translateY(30px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
+        'sweep-y': {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(400%)' },
         },
-        'slide-in-right': {
-          '0%': { transform: 'translateX(20px)', opacity: '0' },
-          '100%': { transform: 'translateX(0)', opacity: '1' },
-        },
-        'fade-in': {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        'bounce-in': {
-          '0%': { transform: 'scale(0.3)', opacity: '0' },
-          '100%': { transform: 'scale(1)', opacity: '1' },
-        },
-        'equalizer': {
-          '0%, 100%': { height: '4px' },
-          '50%': { height: '16px' },
+        'swap-in': {
+          '0%': { opacity: '0', transform: 'translateY(8px)' },
+          '100%': { opacity: '1', transform: 'none' },
         },
       },
     },

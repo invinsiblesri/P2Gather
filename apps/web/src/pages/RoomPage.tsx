@@ -6,8 +6,7 @@ import { ListenerStrip } from '../features/room/ListenerStrip';
 import { Chat } from '../features/chat/Chat';
 import { Search } from '../features/search/Search';
 import { io } from 'socket.io-client';
-import { Copy, Check, Share2 } from 'lucide-react';
-import { Logo } from '../ui/Logo';
+import { Copy, Check, ArrowUpRight } from 'lucide-react';
 
 export function RoomPage() {
   const { code } = useParams<{ code: string }>();
@@ -34,25 +33,27 @@ export function RoomPage() {
   };
 
   return (
-    <div className="relative min-h-screen text-text-primary">
+    <div className="relative min-h-screen text-bone-50">
       {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 h-14 glass-strong z-50">
+      <nav className="fixed top-0 left-0 right-0 h-14 bg-ink-950/90 backdrop-blur-md border-b border-edge z-50">
         <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4">
           <Link to="/" className="flex items-center gap-2">
-            <Logo className="w-7 h-7" />
-            <span className="font-display font-bold text-sm hidden sm:inline">P2Gather</span>
+            <div className="h-6 w-6 rounded-full bg-electric flex items-center justify-center">
+              <span className="text-white font-display font-bold text-[9px]">P2</span>
+            </div>
+            <span className="font-display font-semibold text-sm hidden sm:inline">P2Gather</span>
           </Link>
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2 glass rounded-pill px-3 py-1.5">
-              <div className="w-1.5 h-1.5 bg-brand-lime rounded-full animate-pulse" />
-              <span className="text-xs font-mono text-text-primary tracking-wider">{roomCode}</span>
+            <div className="flex items-center gap-2 border border-edge bg-ink-950 px-3 py-1.5 font-mono text-[11px] rounded-full">
+              <span className="h-1.5 w-1.5 rounded-full bg-electric animate-blink" />
+              <span className="text-bone-200 tracking-wider">{roomCode}</span>
             </div>
             <button
               onClick={handleCopy}
-              className="p-2 glass rounded-lg glass-hover"
+              className="flex h-8 w-8 items-center justify-center border border-edge text-bone-400 hover:text-bone-50 hover:border-edge-hi transition-colors"
               title="Copy invite link"
             >
-              {copied ? <Check size={14} className="text-brand-lime" /> : <Share2 size={14} className="text-text-muted" />}
+              {copied ? <Check size={14} className="text-electric" /> : <Copy size={14} />}
             </button>
           </div>
         </div>
@@ -75,7 +76,7 @@ export function RoomPage() {
           <div className="grid lg:grid-cols-5 gap-5">
             {/* Left: Search + Listeners */}
             <div className="lg:col-span-3 space-y-5">
-              <div className="glass rounded-glass overflow-hidden">
+              <div className="spot border border-edge rounded-spot overflow-hidden backdrop-blur-sm bg-ink-950/60">
                 <Search />
               </div>
               <ListenerStrip />

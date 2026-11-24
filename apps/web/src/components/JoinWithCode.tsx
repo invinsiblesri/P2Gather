@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '../ui/Button';
+import { useReveal } from '../hooks/useReveal';
 
 export function JoinWithCode() {
   const [code, setCode] = useState('');
   const navigate = useNavigate();
+  const ref = useReveal();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let val = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -19,25 +20,35 @@ export function JoinWithCode() {
   };
 
   return (
-    <div id="join" className="py-16 px-6 text-center w-full">
-      <div className="max-w-sm mx-auto glass rounded-glass p-8">
-        <span className="text-xs font-mono text-text-muted tracking-widest uppercase mb-2 block">Have a room code?</span>
-        <h3 className="text-xl font-display font-bold text-text-primary mb-6">Join a Room</h3>
-        <div className="space-y-4">
-          <input
-            type="text"
-            value={code}
-            onChange={handleChange}
-            onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-            placeholder="000-000"
-            className="w-full bg-white/[0.03] border border-white/[0.06] rounded-button px-4 py-3.5 text-2xl font-mono text-center tracking-[0.3em] text-text-primary placeholder:text-text-muted/40 focus:outline-none focus:border-brand-lime/40 focus:ring-2 focus:ring-brand-lime/10 transition-all"
-            maxLength={7}
-          />
-          <Button className="w-full" disabled={code.replace('-', '').length !== 6} onClick={handleSubmit}>
-            Join Room
-          </Button>
+    <section id="join" className="border-t border-edge px-5 py-20 sm:px-10">
+      <div ref={ref} className="rv max-w-sm mx-auto">
+        <div className="spot border border-edge p-8 rounded-spot backdrop-blur-sm bg-ink-950/60">
+          <div className="relative z-10 text-center">
+            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-bone-500 mb-2">04 — Join</p>
+            <h3 className="font-display text-2xl font-semibold tracking-tight text-bone-50 mb-6">
+              Have a room code?
+            </h3>
+            <div className="space-y-4">
+              <input
+                type="text"
+                value={code}
+                onChange={handleChange}
+                onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+                placeholder="000-000"
+                className="w-full bg-ink-900/60 border border-edge px-4 py-4 text-2xl font-mono text-center tracking-[0.3em] text-bone-50 placeholder:text-bone-500/40 focus:outline-none focus:border-electric/40 focus:ring-1 focus:ring-electric/20 transition-all"
+                maxLength={7}
+              />
+              <button
+                onClick={handleSubmit}
+                disabled={code.replace('-', '').length !== 6}
+                className="btn-solid w-full disabled:opacity-30 disabled:cursor-not-allowed"
+              >
+                Join Room
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

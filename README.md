@@ -18,9 +18,9 @@ Both services auto-deploy on every push to `main`.
 - 🔍 **Search** — YouTube and Audius with thumbnails and one-tap queue
 - 🎧 **Listen Together rooms** — 6-character codes, up to 25 listeners, real-time sync
 - 💬 **Live chat** — lightweight real-time messaging in every room
-- 🎨 **Glass UI** — frosted-glass design with aurora backgrounds and smooth animations
-- 🔒 **Zero friction** — no accounts, no installs, no tracking
-- 📱 **Responsive** — works on desktop, tablet, and mobile
+- 🎨 **Editorial UI** — scroll-reveal animations, mouse-follow spotlight cards, noise texture, animated waveform visualizer
+- 🔒 **Zero friction** — no accounts, no installs, no analytics SDK
+- 📱 **Responsive** — desktop sidebar-style nav on wide screens, mobile menu on small
 
 ## Stack
 
@@ -58,7 +58,7 @@ See **[GUIDE.md](./GUIDE.md)** for the full step-by-step deployment guide.
 
 ## Inspiration & Credits
 
-P2Gather's UI design and feature set are inspired by **[Auralis](https://github.com/Shreyanshh071/Auralis)** by [@Shreyanshh071](https://github.com/Shreyanshh071) — a beautifully crafted music player featuring Liquid Glass effects, dynamic artwork-driven theming, synchronized listening rooms, and a polished Material You experience. P2Gather adapts these ideas for the web with frosted-glass surfaces, aurora backgrounds, and the same Listen Together room concept. Full credit to the Auralis team for the design inspiration.
+P2Gather's UI design is inspired by **[Auralis](https://github.com/Shreyanshh071/Auralis)** by [@Shreyanshh071](https://github.com/Shreyanshh071) — a beautifully crafted open-source music player for Android featuring Liquid Glass effects, synchronized listening rooms, word-by-word lyrics, and dynamic artwork-driven theming. The editorial design language, scroll-reveal animations, numbered section navigation, mouse-follow spotlight cards, and feature card patterns in P2Gather's landing page draw directly from Auralis's website design. Full credit to the Auralis team.
 
 ## Status
 

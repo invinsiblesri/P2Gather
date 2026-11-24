@@ -1,32 +1,74 @@
-import { Sparkles } from 'lucide-react';
+import { useReveal } from '../hooks/useReveal';
+import { useSpotlight } from '../hooks/useSpotlight';
+
+const STEPS = [
+  {
+    num: '01',
+    title: 'Create a Room',
+    desc: 'Hit "Create Room" and get a 6-character code instantly. No sign-up, no email, no waiting.',
+    accent: 'text-electric',
+  },
+  {
+    num: '02',
+    title: 'Share the Code',
+    desc: 'Send the code to friends via WhatsApp, Discord, or any messaging app. Or share the direct link.',
+    accent: 'text-hot',
+  },
+  {
+    num: '03',
+    title: 'Press Play Together',
+    desc: 'Search for a track, add it to the queue, and everyone hears the same song at the same moment.',
+    accent: 'text-bone-50',
+  },
+];
 
 export function HowItWorks() {
-  const steps = [
-    { num: '01', title: 'Create', desc: 'Spin up a private room instantly. No sign-up, no downloads.', gradient: 'from-brand-lime/20 to-brand-mint/10' },
-    { num: '02', title: 'Share', desc: 'Send the 6-character code to friends via any messaging app.', gradient: 'from-brand-indigo/20 to-brand-violet/10' },
-    { num: '03', title: 'Sync', desc: 'Everyone hears the same beat at the same millisecond. Magic.', gradient: 'from-brand-coral/20 to-brand-lime/10' },
-  ];
+  const heading = useReveal();
 
   return (
-    <div id="how" className="py-16 px-6 max-w-5xl mx-auto">
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center gap-2 glass rounded-pill px-4 py-1.5 mb-4">
-          <Sparkles size={14} className="text-brand-lime" />
-          <span className="text-xs font-medium text-text-secondary">Simple as 1-2-3</span>
-        </div>
-        <h2 className="text-3xl md:text-4xl font-display font-bold text-text-primary">How It Works</h2>
+    <section id="how" className="relative scroll-mt-14 border-t border-edge px-5 pt-8 pb-20 sm:px-10">
+      <div ref={heading} className="rv mb-10">
+        <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-bone-500">03 — How It Works</p>
+        <h2 className="mt-3 font-display text-4xl font-semibold uppercase leading-[0.95] tracking-[-0.03em] text-bone-50 sm:text-5xl">
+          Three steps.<br />Zero friction.
+        </h2>
       </div>
-      <div className="grid md:grid-cols-3 gap-4">
-        {steps.map(step => (
-          <div key={step.num} className="relative glass rounded-glass p-6 group glass-hover overflow-hidden">
-            <div className={`absolute inset-0 bg-gradient-to-br ${step.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-            <div className="relative">
-              <span className="inline-block text-3xl font-display font-extrabold text-white/[0.06] mb-3">{step.num}</span>
-              <h3 className="text-lg font-display font-bold text-text-primary mb-2">{step.title}</h3>
-              <p className="text-text-secondary text-sm leading-relaxed">{step.desc}</p>
-            </div>
-          </div>
+
+      <div className="grid gap-6 md:grid-cols-3">
+        {STEPS.map((step, i) => (
+          <StepCard key={step.num} step={step} delay={i * 100} />
         ))}
+      </div>
+
+      {/* Visual connector line */}
+      <div className="hidden md:block relative mt-[-180px] mb-[120px] mx-auto max-w-4xl">
+        <div className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-edge to-transparent" />
+      </div>
+    </section>
+  );
+}
+
+function StepCard({ step, delay }: { step: typeof STEPS[0]; delay: number }) {
+  const ref = useReveal();
+  const { onMouseMove } = useSpotlight();
+
+  return (
+    <div
+      ref={ref}
+      className="rv spot border border-edge p-8 rounded-spot backdrop-blur-sm bg-ink-950/60"
+      style={{ transitionDelay: `${delay}ms` } as React.CSSProperties}
+      onMouseMove={onMouseMove}
+    >
+      <div className="relative z-10">
+        <span className={`font-display text-5xl font-bold ${step.accent} opacity-20`}>
+          {step.num}
+        </span>
+        <h3 className="mt-4 font-display text-xl font-semibold tracking-tight text-bone-50">
+          {step.title}
+        </h3>
+        <p className="mt-3 text-sm leading-relaxed text-bone-300">
+          {step.desc}
+        </p>
       </div>
     </div>
   );

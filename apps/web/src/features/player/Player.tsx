@@ -17,43 +17,47 @@ export function Player({
   const pos = currentTrack?.positionSec || 0;
   const dur = currentTrack?.durationSeconds || 1;
   const pct = Math.min((pos / dur) * 100, 100);
-
-  const fmt = (s: number) =>
-    `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+  const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
 
   return (
-    <div className="relative bg-bg-surface border border-white/10 rounded-card p-6 w-full max-w-3xl mx-auto overflow-hidden">
-      {/* Glow behind the card */}
-      <div className="absolute -inset-px bg-gradient-to-r from-brand-indigo/10 to-brand-mint/10 rounded-card blur-sm -z-10" />
+    <div className="relative glass-strong rounded-glass p-5 w-full overflow-hidden">
+      {/* Subtle background glow from artwork */}
+      {currentTrack?.artworkUrl && (
+        <div className="absolute inset-0 opacity-10">
+          <img src={currentTrack.artworkUrl} alt="" className="w-full h-full object-cover blur-3xl scale-150" />
+        </div>
+      )}
 
       {currentTrack ? (
-        <div className="flex items-center gap-5">
+        <div className="relative flex items-center gap-4">
           {/* Artwork */}
           {currentTrack.artworkUrl ? (
-            <img
-              src={currentTrack.artworkUrl}
-              alt={currentTrack.title}
-              className="w-16 h-16 rounded-lg object-cover border border-white/10 flex-shrink-0"
-            />
+            <div className="relative flex-shrink-0">
+              <div className="absolute inset-0 bg-brand-lime/20 rounded-xl blur-xl scale-110 opacity-30" />
+              <img
+                src={currentTrack.artworkUrl}
+                alt={currentTrack.title}
+                className="relative w-16 h-16 md:w-20 md:h-20 rounded-xl object-cover border border-white/[0.06]"
+              />
+            </div>
           ) : (
-            <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-brand-indigo/40 to-brand-mint/40 border border-white/10 flex-shrink-0" />
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-gradient-to-br from-brand-lime/20 to-brand-indigo/20 border border-white/[0.06] flex-shrink-0" />
           )}
 
           {/* Info + progress */}
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-bold text-text-primary truncate">{currentTrack.title}</h3>
-            <p className="text-text-secondary text-xs truncate mb-2">{currentTrack.artist}</p>
+            <h3 className="text-sm font-display font-bold text-text-primary truncate">{currentTrack.title}</h3>
+            <p className="text-text-muted text-xs truncate mb-3">{currentTrack.artist}</p>
 
             <div className="flex items-center gap-3">
-              <div className="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
+              <span className="text-[10px] font-mono text-text-muted tabular-nums w-8">{fmt(pos)}</span>
+              <div className="flex-1 h-1 bg-white/[0.06] rounded-full overflow-hidden group cursor-pointer">
                 <div
-                  className="h-full bg-gradient-to-r from-brand-indigo to-brand-mint rounded-full transition-all"
+                  className="h-full rounded-full bg-gradient-to-r from-brand-lime to-brand-mint transition-all"
                   style={{ width: `${pct}%` }}
                 />
               </div>
-              <span className="text-[10px] font-mono text-text-muted tabular-nums whitespace-nowrap">
-                {fmt(pos)} / {fmt(dur)}
-              </span>
+              <span className="text-[10px] font-mono text-text-muted tabular-nums w-8 text-right">{fmt(dur)}</span>
             </div>
           </div>
 
@@ -61,20 +65,30 @@ export function Player({
           <div className="flex items-center gap-2 flex-shrink-0">
             <button
               onClick={onPlayPause}
-              className="w-10 h-10 rounded-full bg-brand-indigo flex items-center justify-center text-white hover:bg-[#4F46E5] transition-colors"
+              className="w-11 h-11 rounded-full bg-brand-lime text-bg-canvas flex items-center justify-center shadow-glow-lime hover:scale-105 active:scale-95 transition-transform"
             >
-              {isPlaying ? <Pause size={16} /> : <Play size={16} fill="currentColor" />}
+              {isPlaying ? <Pause size={16} /> : <Play size={16} fill="currentColor" className="ml-0.5" />}
             </button>
             <button
               onClick={onNext}
-              className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-elevated transition-colors"
+              className="w-9 h-9 rounded-full glass flex items-center justify-center text-text-muted hover:text-text-primary glass-hover"
             >
               <SkipForward size={14} />
             </button>
           </div>
         </div>
       ) : (
-        <p className="text-text-muted text-sm text-center py-6">Nothing playing yet. Search and add a track to the queue.</p>
+        <div className="relative text-center py-8">
+          {/* Equalizer bars placeholder */}
+          <div className="flex items-end justify-center gap-1 mb-3 h-5">
+            <div className="w-1 bg-brand-lime/30 rounded-full animate-equalizer-1" />
+            <div className="w-1 bg-brand-lime/30 rounded-full animate-equalizer-2" />
+            <div className="w-1 bg-brand-lime/30 rounded-full animate-equalizer-3" />
+            <div className="w-1 bg-brand-lime/30 rounded-full animate-equalizer-1" style={{ animationDelay: '0.3s' }} />
+            <div className="w-1 bg-brand-lime/30 rounded-full animate-equalizer-2" style={{ animationDelay: '0.5s' }} />
+          </div>
+          <p className="text-text-muted text-sm">Search for a track to start listening</p>
+        </div>
       )}
     </div>
   );

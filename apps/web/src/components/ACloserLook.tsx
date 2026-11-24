@@ -6,29 +6,33 @@ const screens = [
     title: 'ROOM',
     id: '01',
     icon: Music,
-    description: 'See who is listening, the current track, and playback controls \u2014 all synced in real time.',
-    color: 'from-brand-indigo/60 to-brand-indigo/20',
+    description: 'Real-time synced playback with everyone in the room. See listeners, controls, and track info.',
+    gradient: 'from-brand-lime/30 via-brand-lime/5 to-transparent',
+    iconColor: 'text-brand-lime',
   },
   {
     title: 'SEARCH',
     id: '02',
     icon: Search,
-    description: 'Search YouTube or Audius. Results appear instantly with thumbnails and one-tap queue.',
-    color: 'from-brand-mint/60 to-brand-mint/20',
+    description: 'Search YouTube or Audius instantly. Thumbnails, artists, and one-tap add to queue.',
+    gradient: 'from-brand-indigo/30 via-brand-indigo/5 to-transparent',
+    iconColor: 'text-brand-indigo',
   },
   {
     title: 'QUEUE',
     id: '03',
     icon: ListMusic,
-    description: 'Collaborative queue — anyone in the room can add tracks. Up to 50 items.',
-    color: 'from-[#2563EB]/60 to-brand-indigo/20',
+    description: 'Collaborative queue. Anyone in the room can add tracks. Up to 50 items.',
+    gradient: 'from-brand-violet/30 via-brand-violet/5 to-transparent',
+    iconColor: 'text-brand-violet',
   },
   {
     title: 'CHAT',
     id: '04',
     icon: MessageCircle,
-    description: 'Lightweight real-time chat. React to tracks and coordinate with friends.',
-    color: 'from-[#F2674B]/50 to-brand-mint/20',
+    description: 'Real-time lightweight chat. Coordinate with friends and react to tracks.',
+    gradient: 'from-brand-coral/30 via-brand-coral/5 to-transparent',
+    iconColor: 'text-brand-coral',
   },
 ];
 
@@ -39,20 +43,25 @@ export function ACloserLook() {
 
   return (
     <div className="py-16 px-6 w-full max-w-4xl mx-auto">
-      <h2 className="font-display font-bold text-3xl md:text-4xl mb-12 text-center uppercase tracking-tight text-text-primary">See The Room.</h2>
+      <div className="text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-display font-bold text-text-primary">Inside The Room</h2>
+        <p className="text-text-muted text-sm mt-2">Four screens, one seamless experience</p>
+      </div>
 
       <div className="relative">
         {/* Phone mockup */}
-        <div className="aspect-[9/16] max-w-[280px] mx-auto bg-bg-surface border border-white/10 rounded-[32px] overflow-hidden shadow-2xl relative">
-          {/* Status bar */}
-          <div className="h-8 bg-bg-elevated flex items-center justify-center">
-            <div className="w-16 h-1 rounded-full bg-white/10" />
+        <div className="aspect-[9/16] max-w-[260px] mx-auto glass-strong rounded-[36px] overflow-hidden shadow-glass-lg relative">
+          {/* Notch */}
+          <div className="h-7 flex items-center justify-center">
+            <div className="w-20 h-1.5 rounded-full bg-white/[0.06]" />
           </div>
-          {/* Screen content */}
-          <div className={`flex-1 flex flex-col items-center justify-center p-6 h-full bg-gradient-to-b ${screen.color}`}>
-            <Icon size={48} className="text-white/40 mb-4" />
-            <span className="text-lg font-bold text-text-primary mb-2">{screen.title}</span>
-            <p className="text-text-secondary text-xs text-center leading-relaxed max-w-[200px]">{screen.description}</p>
+          {/* Screen */}
+          <div className={`flex-1 flex flex-col items-center justify-center p-8 h-[calc(100%-28px)] bg-gradient-to-b ${screen.gradient}`}>
+            <div className={`p-4 rounded-2xl bg-white/[0.04] mb-5 ${screen.iconColor}`}>
+              <Icon size={40} strokeWidth={1.5} />
+            </div>
+            <span className="text-lg font-display font-bold text-text-primary mb-2">{screen.title}</span>
+            <p className="text-text-secondary text-xs text-center leading-relaxed">{screen.description}</p>
           </div>
         </div>
 
@@ -60,31 +69,30 @@ export function ACloserLook() {
         <div className="flex justify-between items-center mt-8 max-w-xs mx-auto">
           <button
             onClick={() => setActive(prev => (prev - 1 + screens.length) % screens.length)}
-            className="p-2 border border-white/10 rounded-lg hover:bg-bg-elevated transition-colors"
+            className="p-2.5 glass rounded-xl glass-hover"
           >
-            <ChevronLeft size={20} />
+            <ChevronLeft size={18} />
           </button>
 
-          {/* Dots */}
           <div className="flex gap-2 items-center">
             {screens.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setActive(i)}
-                className={`w-2 h-2 rounded-full transition-all ${i === active ? 'bg-brand-indigo w-6' : 'bg-white/20 hover:bg-white/40'}`}
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  i === active ? 'w-6 bg-brand-lime' : 'w-1.5 bg-white/[0.15] hover:bg-white/[0.3]'
+                }`}
               />
             ))}
           </div>
 
           <button
             onClick={() => setActive(prev => (prev + 1) % screens.length)}
-            className="p-2 border border-white/10 rounded-lg hover:bg-bg-elevated transition-colors"
+            className="p-2.5 glass rounded-xl glass-hover"
           >
-            <ChevronRight size={20} />
+            <ChevronRight size={18} />
           </button>
         </div>
-
-        <p className="text-center text-xs font-mono text-text-muted mt-4">{screen.id} / {screen.title}</p>
       </div>
     </div>
   );

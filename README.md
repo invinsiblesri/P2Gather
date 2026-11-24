@@ -12,9 +12,19 @@ One person creates a private room and shares a 6-character code (like `84K-2QP`)
 
 Both services auto-deploy on every push to `main`.
 
+## Features
+
+- 🎵 **Synchronized playback** — everyone hears the same beat at the same moment
+- 🔍 **Search** — YouTube and Audius with thumbnails and one-tap queue
+- 🎧 **Listen Together rooms** — 6-character codes, up to 25 listeners, real-time sync
+- 💬 **Live chat** — lightweight real-time messaging in every room
+- 🎨 **Glass UI** — frosted-glass design with aurora backgrounds and smooth animations
+- 🔒 **Zero friction** — no accounts, no installs, no tracking
+- 📱 **Responsive** — works on desktop, tablet, and mobile
+
 ## Stack
 
-- **Frontend:** React 18, Vite, TypeScript (strict), Tailwind, Zustand — `apps/web`
+- **Frontend:** React 18, Vite, TypeScript (strict), Tailwind CSS, Zustand — `apps/web`
 - **Backend:** Node, Express, Socket.io, zod, helmet — `apps/server`
 - **Shared:** types, zod schemas, event names, `MusicProvider` — `packages/shared`
 - **Music:** YouTube Data API v3 (server search) + YouTube IFrame (playback), and Audius REST
@@ -45,6 +55,10 @@ npm test             # room-code generator tests
 - **Backend → Render:** use `render.yaml` or the commands in `GUIDE.md`. Set `YOUTUBE_API_KEY` and `FRONTEND_URL`.
 
 See **[GUIDE.md](./GUIDE.md)** for the full step-by-step deployment guide.
+
+## Inspiration & Credits
+
+P2Gather's UI design and feature set are inspired by **[Auralis](https://github.com/Shreyanshh071/Auralis)** by [@Shreyanshh071](https://github.com/Shreyanshh071) — a beautifully crafted music player featuring Liquid Glass effects, dynamic artwork-driven theming, synchronized listening rooms, and a polished Material You experience. P2Gather adapts these ideas for the web with frosted-glass surfaces, aurora backgrounds, and the same Listen Together room concept. Full credit to the Auralis team for the design inspiration.
 
 ## Status
 

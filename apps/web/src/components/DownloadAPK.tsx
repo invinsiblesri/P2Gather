@@ -2,7 +2,7 @@ import { useReveal } from '../hooks/useReveal';
 import { useSpotlight } from '../hooks/useSpotlight';
 import { Download, ArrowUpRight, Smartphone, Wifi, Shield } from 'lucide-react';
 
-const APK_URL = 'https://github.com/invinsiblesri/P2Gather/releases/latest/download/P2Gather-v2.0.0.apk';
+const APK_URL = 'https://github.com/invinsiblesri/P2Gather/releases/download/v2.0.0/P2Gather-v2.0.0.apk';
 const APK_SIZE = '6.12 MB';
 const VERSION = 'v2.0.0';
 

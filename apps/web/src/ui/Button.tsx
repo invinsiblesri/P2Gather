@@ -5,24 +5,24 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg' | 'icon';
 }
 
-export function Button({ 
-  className, 
-  variant = 'primary', 
-  size = 'md', 
-  ...props 
+export function Button({
+  className,
+  variant = 'primary',
+  size = 'md',
+  ...props
 }: ButtonProps) {
   const variants = {
     primary: 'bg-brand-indigo text-white hover:bg-[#4F46E5] active:scale-95',
     secondary: 'bg-brand-mint text-white hover:opacity-90',
-    outline: 'border border-border-subtle text-text-primary hover:bg-bg-elevated',
+    outline: 'border border-white/10 text-text-primary hover:bg-bg-elevated',
     ghost: 'text-text-secondary hover:text-text-primary hover:bg-bg-elevated',
   };
 
   const sizes = {
-    sm: 'px-12 py-4 text-sm',
-    md: 'px-24 py-12',
-    lg: 'px-32 py-16 text-lg',
-    icon: 'p-12',
+    sm: 'px-3 py-1.5 text-sm',
+    md: 'px-6 py-3',
+    lg: 'px-8 py-4 text-lg',
+    icon: 'p-3',
   };
 
   return (

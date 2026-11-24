@@ -40,7 +40,7 @@ export function AnimatedBackground() {
       {FLOAT_NOTES.map((n, i) => (
         <Music2
           key={i}
-          className="anim-bg-float text-white/10"
+          className="absolute anim-bg-float text-white/10"
           style={{
             left: n.left,
             top: n.top,

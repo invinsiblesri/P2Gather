@@ -1,20 +1,21 @@
 import { Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 
 export function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-bg-canvas text-text-primary">
-      <nav className="fixed top-0 left-0 right-0 h-16 bg-bg-canvas border-b border-white/10 flex items-center px-6 z-50">
-        <Link to="/" className="text-text-secondary hover:text-text-primary text-sm">
-          ← Back to P2Gather
+    <div className="relative min-h-screen text-text-primary">
+      <nav className="fixed top-0 left-0 right-0 h-14 bg-bg-canvas/80 backdrop-blur-md border-b border-white/10 flex items-center px-6 z-50">
+        <Link to="/" className="inline-flex items-center gap-1.5 text-text-secondary hover:text-text-primary text-sm transition-colors">
+          <ArrowLeft size={16} /> Back to P2Gather
         </Link>
       </nav>
-      <main className="pt-16 max-w-3xl mx-auto px-6 py-16 space-y-12">
+      <main className="pt-14 max-w-3xl mx-auto px-6 py-12 space-y-10">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Privacy & Attributions</h1>
+          <h1 className="text-3xl font-bold mb-1">Privacy &amp; Attributions</h1>
           <p className="text-text-secondary text-sm">Last updated: November 2026</p>
         </div>
 
-        <section className="space-y-4">
+        <section className="space-y-3">
           <h2 className="text-xl font-semibold">Privacy</h2>
           <p className="text-text-secondary text-sm leading-relaxed">
             P2Gather does not require an account and does not store personal data. Rooms are held
@@ -31,7 +32,7 @@ export function PrivacyPage() {
           </p>
         </section>
 
-        <section className="space-y-4">
+        <section className="space-y-3">
           <h2 className="text-xl font-semibold">Attributions</h2>
           <p className="text-text-secondary text-sm leading-relaxed">
             Search is powered by the YouTube Data API v3. Playback uses the YouTube IFrame Player.
@@ -47,7 +48,7 @@ export function PrivacyPage() {
           </p>
         </section>
 
-        <section className="space-y-4">
+        <section className="space-y-3">
           <h2 className="text-xl font-semibold">Terms of use</h2>
           <p className="text-text-secondary text-sm leading-relaxed">
             P2Gather is an independent, non-commercial learning project. Use it responsibly and respect

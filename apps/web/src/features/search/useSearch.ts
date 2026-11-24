@@ -1,10 +1,13 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { MusicProvider, Track } from '@p2gather/shared';
 import { debounce } from 'lodash';
-import { useQueue } from '../queue/Queue';
+import { usePlayerStore } from '../../stores/playerStore';
+import { useLibraryStore } from '../../stores/libraryStore';
 
 export function useSearch(provider: MusicProvider) {
-  const addToQueue = useQueue().add;
+  const addToQueue = usePlayerStore((s) => s.addToQueue);
+  const play = usePlayerStore((s) => s.play);
+  const addRecentSearch = useLibraryStore((s) => s.addRecentSearch);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<Track[]>([]);
   const [loading, setLoading] = useState(false);
@@ -22,6 +25,7 @@ export function useSearch(provider: MusicProvider) {
     try {
       const data = await provider.search(term);
       setResults(data);
+      addRecentSearch(term);
     } catch (err) {
       console.error('Search error:', err);
       setResults([]);
@@ -29,7 +33,7 @@ export function useSearch(provider: MusicProvider) {
     } finally {
       setLoading(false);
     }
-  }, [provider]);
+  }, [provider, addRecentSearch]);
 
   const debouncedRef = useRef<ReturnType<typeof debounce> | null>(null);
 
@@ -60,5 +64,5 @@ export function useSearch(provider: MusicProvider) {
     setError(null);
   }, []);
 
-  return { query, setQuery, results, loading, error, runSearch, clear, addToQueue };
+  return { query, setQuery, results, loading, error, runSearch, clear, addToQueue, play };
 }

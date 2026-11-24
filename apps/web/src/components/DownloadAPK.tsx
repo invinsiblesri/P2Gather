@@ -2,9 +2,9 @@ import { useReveal } from '../hooks/useReveal';
 import { useSpotlight } from '../hooks/useSpotlight';
 import { Download, ArrowUpRight, Smartphone, Wifi, Shield } from 'lucide-react';
 
-const APK_URL = 'https://github.com/invinsiblesri/P2Gather/releases/download/v1.0.0/P2Gather-v1.0.0.apk';
-const APK_SIZE = '4.06 MB';
-const VERSION = 'v1.0.0';
+const APK_URL = 'https://github.com/invinsiblesri/P2Gather/releases/latest/download/P2Gather-v2.0.0.apk';
+const APK_SIZE = '6.12 MB';
+const VERSION = 'v2.0.0';
 
 export function DownloadAPK() {
   const heading = useReveal();
@@ -73,9 +73,7 @@ export function DownloadAPK() {
           >
             <div className="relative z-10">
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-12 w-12 rounded-2xl bg-electric flex items-center justify-center">
-                  <span className="text-white font-display font-bold text-lg">P2</span>
-                </div>
+                <img src="/images/logo.jpg" alt="P2Gather" className="h-12 w-12 rounded-2xl object-cover" />
                 <div>
                   <h3 className="font-display text-lg font-semibold text-bone-50">P2Gather</h3>
                   <p className="font-mono text-[11px] text-bone-400">Synchronized listening rooms</p>

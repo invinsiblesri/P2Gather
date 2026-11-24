@@ -2,27 +2,35 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0F1115" />
+    <link rel="icon" type="image/jpeg" href="/images/logo.jpg" />
+    <link rel="apple-touch-icon" href="/images/logo.jpg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#02060E" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <title>P2Gather — Listen Together, In Sync</title>
-    <meta name="description" content="Create a room, share the code, and everyone hears the same song at the same moment. No account. No install." />
+    <meta name="description" content="Create a room, share the code, and everyone hears the same song at the same moment. No account required." />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="P2Gather — Listen Together, In Sync" />
     <meta property="og:description" content="Create a room, share the code, and everyone hears the same song at the same moment." />
-    <meta property="og:image" content="/og.png" />
+    <meta property="og:image" content="/images/logo.jpg" />
     <meta property="og:url" content="https://p2gather.vercel.app" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="P2Gather — Listen Together, In Sync" />
     <meta name="twitter:description" content="Create a room, share the code, and everyone hears the same song at the same moment." />
-    <meta name="twitter:image" content="/og.png" />
+    <meta name="twitter:image" content="/images/logo.jpg" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
   </head>
   <body>
     <div id="root"></div>
+    <div id="youtube-player" style="position:fixed;width:1px;height:1px;top:-100px;left:-100px;opacity:0;pointer-events:none;"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

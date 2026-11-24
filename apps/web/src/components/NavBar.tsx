@@ -29,9 +29,7 @@ export function NavBar() {
       >
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-5">
           <a href="#index" className="flex items-center gap-2.5 group">
-            <div className="h-7 w-7 rounded-full bg-electric flex items-center justify-center">
-              <span className="text-white font-display font-bold text-xs">P2</span>
-            </div>
+            <img src="/images/logo.jpg" alt="P2Gather" className="h-8 w-8 rounded-xl object-cover" />
             <span className="font-display text-sm font-semibold tracking-tight text-bone-50">
               P2Gather
               <span className="hidden sm:block font-mono text-[9px] font-normal uppercase tracking-[0.22em] text-bone-500">

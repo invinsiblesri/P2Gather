@@ -111,7 +111,7 @@ export class RoomManager {
   removeFromQueue(roomCode: string, trackId: string): RoomState | null {
     const room = this.rooms.get(roomCode);
     if (!room) return null;
-    room.queue = room.queue.filter(t => t.id === trackId);
+    room.queue = room.queue.filter(t => t.id !== trackId);
     room.lastActivityAt = Date.now();
     return room;
   }

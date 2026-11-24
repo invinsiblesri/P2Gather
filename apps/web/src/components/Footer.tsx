@@ -7,9 +7,7 @@ export function Footer() {
       <div className="grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <div className="flex items-center gap-2.5 mb-4">
-            <div className="h-7 w-7 rounded-full bg-electric flex items-center justify-center">
-              <span className="text-white font-display font-bold text-xs">P2</span>
-            </div>
+            <img src="/images/logo.jpg" alt="P2Gather" className="h-8 w-8 rounded-xl object-cover" />
             <span className="font-display text-sm font-semibold tracking-tight text-bone-50">P2Gather</span>
           </div>
           <p className="text-sm text-bone-400 max-w-xs leading-relaxed">

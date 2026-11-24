@@ -1,0 +1,20 @@
+{
+  "name": "P2Gather",
+  "short_name": "P2Gather",
+  "description": "Listen together, in sync. Create a room, share the code, and everyone hears the same song at the same moment.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#02060E",
+  "theme_color": "#02060E",
+  "icons": [
+    {
+      "src": "/images/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["music", "entertainment"],
+  "scope": "/"
+}

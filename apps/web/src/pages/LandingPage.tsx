@@ -3,6 +3,7 @@ import { Hero } from '../components/Hero';
 import { Features } from '../components/Features';
 import { ACloserLook } from '../components/ACloserLook';
 import { HowItWorks } from '../components/HowItWorks';
+import { DownloadAPK } from '../components/DownloadAPK';
 import { JoinWithCode } from '../components/JoinWithCode';
 import { FAQ } from '../components/FAQ';
 import { Footer } from '../components/Footer';
@@ -16,6 +17,7 @@ export function LandingPage() {
         <ACloserLook />
         <Features />
         <HowItWorks />
+        <DownloadAPK />
         <JoinWithCode />
         <FAQ />
       </main>

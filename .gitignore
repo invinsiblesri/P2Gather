@@ -37,3 +37,7 @@ coverage/
 # Vercel
 .vercel
 .vercel
+
+# Capacitor Android build
+apps/web/android/
+P2Gather-v*.apk

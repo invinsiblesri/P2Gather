@@ -9,6 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/cli": "^8.6.2",
+    "@capacitor/core": "^8.6.2",
     "@p2gather/shared": "*",
     "@types/lodash": "^4.17.27",
     "clsx": "^2.0.0",

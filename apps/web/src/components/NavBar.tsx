@@ -6,7 +6,8 @@ const NAV_ITEMS = [
   { num: '01', label: 'Index', href: '#index' },
   { num: '02', label: 'Features', href: '#features' },
   { num: '03', label: 'How It Works', href: '#how' },
-  { num: '04', label: 'Join', href: '#join' },
+  { num: '04', label: 'Download', href: '#download' },
+  { num: '05', label: 'Join', href: '#join' },
 ];
 
 export function NavBar() {
